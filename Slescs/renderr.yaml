@@ -1,0 +1,32 @@
+databases:
+  - name: Seed-DB
+    plan: free
+    databaseName: seed_db
+    user: seed_db_user
+
+services:
+  - type: web
+    name: auth_repo-service
+    plan: free
+    runtime: python
+    rootDir: auth_repo
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn auth_repo.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: Seed-DB
+          property: connectionString
+
+  - type: web
+    name: seed_cert_and_tracking-service
+    plan: free
+    runtime: python
+    rootDir: seed_cert_and_tracking
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn seed_cert_and_tracking.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: Seed-DB
+          property: connectionString
