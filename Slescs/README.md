@@ -39,7 +39,7 @@ This project is currently live and operational, with both frontend and backend h
 
 ```bash
 git clone https://github.com/aadumbuya/Capstone.git
-cd Seed_traceability_system
+cd Capstone
 ````
 
 ### 2. Set Up a Virtual Environment
